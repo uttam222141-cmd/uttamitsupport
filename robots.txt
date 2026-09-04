@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /erp/
 
 Sitemap: https://uttamitsupport.example.com/sitemap.xml
