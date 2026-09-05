@@ -10,6 +10,7 @@
   border:3px double var(--erp-primary); border-radius:10px;
   padding:28px 30px;
 }
+.doc-logo{ width:56px; height:56px; object-fit:contain; flex-shrink:0; }
 .doc-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:20px; border-bottom:2px solid var(--erp-primary); padding-bottom:16px; margin-bottom:18px; }
 .doc-brand{ display:flex; gap:12px; align-items:center; }
 .doc-brand-name{ font-family:var(--font-display); font-weight:700; font-size:1.3rem; color:var(--erp-primary); }
@@ -61,13 +62,10 @@ table.doc-items .row-remove{ border:none; background:none; color:#B3401D; cursor
   body.erp-body, .erp-shell, .erp-main, .erp-content{
     display:block !important; background:#fff !important; margin:0 !important; padding:0 !important; height:auto !important; min-height:0 !important;
   }
-  .doc-sheet{ border:2px double var(--erp-primary); margin:0 auto !important; box-shadow:none; position:relative; }
-  .doc-sheet > *:not(.doc-watermark){ position:relative; z-index:1; }
-  .doc-watermark{
-    display:block; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
-    width:300px; opacity:0.08; z-index:0; pointer-events:none;
-  }
+  .doc-watermark{ display:none !important; }
+  .doc-sheet{ border:2px double var(--erp-primary); margin:0 auto !important; box-shadow:none; }
   input, textarea, select{ border:none !important; background:transparent !important; }
   table.doc-items .row-remove, #add-row-btn{ display:none !important; }
+  table.doc-items th{ background:var(--erp-primary) !important; color:#fff !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
   @page{ size:A4; margin:12mm; }
 }
