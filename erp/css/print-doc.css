@@ -61,14 +61,17 @@ table.doc-items .row-remove{ border:none; background:none; color:#B3401D; cursor
   body.erp-body, .erp-shell, .erp-main, .erp-content{
     display:block !important; background:#fff !important; margin:0 !important; padding:0 !important; height:auto !important; min-height:0 !important;
   }
-  .doc-sheet{ border:2px double var(--erp-primary); margin:0 auto !important; box-shadow:none; position:relative; }
-  .doc-sheet > *:not(.doc-watermark){ position:relative; z-index:1; }
-  .doc-watermark{
-    display:block; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
-    width:220px; opacity:0.045; z-index:0; pointer-events:none;
+  .doc-watermark{ display:none !important; }
+  .doc-sheet{
+    border:none !important; border-radius:0 !important; margin:0 !important; box-shadow:none;
+    background-image:url('letterhead-bg.png'); background-repeat:no-repeat; background-size:100% 100%; background-position:top center;
+    padding:230px 60px 210px 60px !important; min-height:100vh;
   }
+  .doc-brand{ display:none !important; }
+  .doc-head{ justify-content:flex-end; border-bottom:none; padding-bottom:0; margin-bottom:14px; }
+  .doc-title{ width:100%; }
   input, textarea, select{ border:none !important; background:transparent !important; }
   table.doc-items .row-remove, #add-row-btn{ display:none !important; }
   table.doc-items th{ background:transparent !important; color:var(--erp-primary) !important; border:1px solid var(--erp-primary) !important; }
-  @page{ size:A4; margin:12mm; }
+  @page{ size:letter; margin:0; }
 }
