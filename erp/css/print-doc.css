@@ -65,9 +65,10 @@ table.doc-items .row-remove{ border:none; background:none; color:#B3401D; cursor
   .doc-sheet > *:not(.doc-watermark){ position:relative; z-index:1; }
   .doc-watermark{
     display:block; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
-    width:300px; opacity:0.08; z-index:0; pointer-events:none;
+    width:220px; opacity:0.045; z-index:0; pointer-events:none;
   }
   input, textarea, select{ border:none !important; background:transparent !important; }
   table.doc-items .row-remove, #add-row-btn{ display:none !important; }
+  table.doc-items th{ background:transparent !important; color:var(--erp-primary) !important; border:1px solid var(--erp-primary) !important; }
   @page{ size:A4; margin:12mm; }
 }
