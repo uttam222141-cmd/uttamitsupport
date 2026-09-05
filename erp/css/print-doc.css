@@ -65,11 +65,13 @@ table.doc-items .row-remove{ border:none; background:none; color:#B3401D; cursor
   .doc-sheet{
     border:none !important; border-radius:0 !important; margin:0 !important; box-shadow:none;
     background-image:url('letterhead-bg.png'); background-repeat:no-repeat; background-size:100% 100%; background-position:top center;
-    padding:230px 60px 210px 60px !important; min-height:100vh;
+    padding:190px 50px 150px 50px !important; min-height:100vh;
   }
   .doc-brand{ display:none !important; }
-  .doc-head{ justify-content:flex-end; border-bottom:none; padding-bottom:0; margin-bottom:14px; }
+  .doc-head{ justify-content:flex-end; border-bottom:none; padding-bottom:0; margin-bottom:10px; }
   .doc-title{ width:100%; }
+  .doc-parties{ margin-bottom:12px; }
+  .doc-signblock{ margin-top:16px !important; }
   input, textarea, select{ border:none !important; background:transparent !important; }
   table.doc-items .row-remove, #add-row-btn{ display:none !important; }
   table.doc-items th{ background:transparent !important; color:var(--erp-primary) !important; border:1px solid var(--erp-primary) !important; }
