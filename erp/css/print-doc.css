@@ -55,11 +55,12 @@ table.doc-items .row-remove{ border:none; background:none; color:#B3401D; cursor
 .doc-actions{ display:flex; gap:10px; margin:0 auto 16px; max-width:900px; flex-wrap:wrap; }
 
 @media print{
-  body.erp-body *{ visibility:hidden; }
-  .doc-sheet, .doc-sheet *{ visibility:visible; }
-  .doc-sheet{ position:absolute; top:0; left:0; width:100%; border:2px double var(--erp-primary); margin:0; }
-  .doc-actions, .erp-sidebar, .erp-topbar{ display:none !important; }
-  input, textarea, select{ border:none !important; }
-  .doc-items .row-remove{ display:none !important; }
+  .erp-sidebar, .erp-topbar, .doc-actions, #customer-picker-card{ display:none !important; }
+  body.erp-body, .erp-shell, .erp-main, .erp-content{
+    display:block !important; background:#fff !important; margin:0 !important; padding:0 !important; height:auto !important; min-height:0 !important;
+  }
+  .doc-sheet{ border:2px double var(--erp-primary); margin:0 auto !important; box-shadow:none; }
+  input, textarea, select{ border:none !important; background:transparent !important; }
+  table.doc-items .row-remove, #add-row-btn{ display:none !important; }
   @page{ size:A4; margin:12mm; }
 }
