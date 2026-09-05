@@ -54,12 +54,19 @@ table.doc-items .row-remove{ border:none; background:none; color:#B3401D; cursor
 
 .doc-actions{ display:flex; gap:10px; margin:0 auto 16px; max-width:900px; flex-wrap:wrap; }
 
+.doc-watermark{ display:none; }
+
 @media print{
   .erp-sidebar, .erp-topbar, .doc-actions, #customer-picker-card{ display:none !important; }
   body.erp-body, .erp-shell, .erp-main, .erp-content{
     display:block !important; background:#fff !important; margin:0 !important; padding:0 !important; height:auto !important; min-height:0 !important;
   }
-  .doc-sheet{ border:2px double var(--erp-primary); margin:0 auto !important; box-shadow:none; }
+  .doc-sheet{ border:2px double var(--erp-primary); margin:0 auto !important; box-shadow:none; position:relative; }
+  .doc-sheet > *:not(.doc-watermark){ position:relative; z-index:1; }
+  .doc-watermark{
+    display:block; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    width:300px; opacity:0.08; z-index:0; pointer-events:none;
+  }
   input, textarea, select{ border:none !important; background:transparent !important; }
   table.doc-items .row-remove, #add-row-btn{ display:none !important; }
   @page{ size:A4; margin:12mm; }
