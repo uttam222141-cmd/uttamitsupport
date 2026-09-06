@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Delivery Challan | Uttam IT Support ERP</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="css/erp.css">
+<link rel="stylesheet" href="css/print-doc.css">
+</head>
+<body class="erp-body">
+
+<div class="erp-shell">
+  <aside class="erp-sidebar">
+    <div class="brand">
+      <span class="brand-name">UTTAM IT SUPPORT</span>
+      <span class="brand-sub">ERP System</span>
+    </div>
+    <nav class="erp-nav">
+      <a href="index.html">Dashboard</a>
+      <a href="customers.html">Customers</a>
+      <a href="inventory.html">Inventory</a>
+      <a href="quotations.html">Quotations</a>
+      <a href="invoices.html">Invoices</a>
+      <a href="job-cards.html">Repair Job Cards</a>
+      <a href="delivery-challans.html" class="active">Delivery Challans</a>
+      <a href="#" class="nav-soon">AMC Agreements <small>(coming soon)</small></a>
+      <a href="#" class="nav-soon">Customer Receipts <small>(coming soon)</small></a>
+      <a href="#" class="nav-soon">Reports <small>(coming soon)</small></a>
+      <a href="#" class="nav-soon" data-role="admin">Settings <small>(coming soon)</small></a>
+    </nav>
+    <div class="erp-sidebar-footer">
+      <span id="erp-user-name">—</span>
+      <span id="erp-user-role" class="erp-badge role-viewer">—</span>
+      <button onclick="erpLogout()">Sign out</button>
+    </div>
+  </aside>
+
+  <main class="erp-main">
+    <div class="erp-topbar">
+      <h1 id="form-title">New Delivery Challan</h1>
+      <a class="btn btn-ghost" href="delivery-challans.html">&larr; Back to list</a>
+    </div>
+    <div class="erp-content">
+
+      <div class="doc-actions">
+        <button class="btn btn-solid" id="save-btn">Save Challan</button>
+        <button class="btn btn-outline" id="print-btn">Print / Save as PDF</button>
+        <span class="erp-error" id="save-status"></span>
+      </div>
+
+      <div class="erp-card" id="customer-picker-card" style="max-width:900px; margin:0 auto 16px;">
+        <div class="erp-field" style="margin-bottom:0;">
+          <label>Select Customer *</label>
+          <input list="customer-options" id="customer-input" placeholder="Type name or phone to search…" autocomplete="off">
+          <datalist id="customer-options"></datalist>
+          <input type="hidden" id="customer-id">
+        </div>
+      </div>
+
+      <div class="doc-sheet" id="doc-sheet">
+        <div class="doc-head">
+          <div class="doc-brand">
+            <img class="doc-logo" src="logo.jpg" alt="Uttam IT Support logo">
+            <div>
+              <div class="doc-brand-name">UTTAM IT SUPPORT</div>
+              <div class="doc-brand-tag">Computer • Laptop • IT Support • Repair • AMC</div>
+              <div class="doc-brand-contact">8887961171 &nbsp;|&nbsp; uttamitsupport@gmail.com &nbsp;|&nbsp; Mumbai, Maharashtra</div>
+            </div>
+          </div>
+          <div class="doc-title">
+            <h2>DELIVERY CHALLAN</h2>
+            <div class="doc-meta">
+              <div><span class="k">Challan No.:</span> <span id="meta-number">(auto on save)</span></div>
+              <div><span class="k">Date:</span> <span id="meta-date"></span></div>
+              <div><span class="k">Vehicle No.:</span> <input type="text" id="vehicle-no"></div>
+              <div><span class="k">Place of Supply:</span> <input type="text" id="place-of-supply"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="doc-parties">
+          <div class="doc-party-box">
+            <h4>Consignee / Customer Details</h4>
+            <div class="row"><span class="k">Name</span> <span id="p-name">—</span></div>
+            <div class="row"><span class="k">Company</span> <span id="p-company">—</span></div>
+            <div class="row"><span class="k">Phone</span> <span id="p-phone">—</span></div>
+            <div class="row"><span class="k">Email</span> <span id="p-email">—</span></div>
+            <div class="row"><span class="k">Address</span> <span id="p-address">—</span></div>
+          </div>
+          <div class="doc-party-box">
+            <h4>Challan Type</h4>
+            <div class="erp-field" style="margin-bottom:8px;">
+              <label style="font-weight:400; display:flex; align-items:center; gap:6px;">
+                <input type="radio" name="challan-type" value="delivery" checked style="width:auto;"> Delivery of Goods
+              </label>
+            </div>
+            <div class="erp-field" style="margin-bottom:8px;">
+              <label style="font-weight:400; display:flex; align-items:center; gap:6px;">
+                <input type="radio" name="challan-type" value="returnable" style="width:auto;"> Returnable (Job Work)
+              </label>
+            </div>
+            <div class="erp-field" style="margin-bottom:0;">
+              <label style="font-weight:400; display:flex; align-items:center; gap:6px;">
+                <input type="radio" name="challan-type" value="repair_return" style="width:auto;"> Repair Return to Customer
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <table class="doc-items" id="items-table">
+          <thead>
+            <tr>
+              <th style="width:32px;">#</th>
+              <th>Description of Goods</th>
+              <th style="width:90px;">HSN / SAC</th>
+              <th style="width:60px;">Qty</th>
+              <th style="width:70px;">Unit</th>
+              <th>Remarks</th>
+              <th style="width:30px;"></th>
+            </tr>
+          </thead>
+          <tbody id="items-body"></tbody>
+        </table>
+        <button class="btn btn-ghost doc-actions" id="add-row-btn" style="margin:-8px 0 18px;">+ Add Row</button>
+
+        <div class="erp-field" style="max-width:900px; margin:0 auto 14px;">
+          <label>Remarks</label>
+          <input type="text" id="remarks">
+        </div>
+
+        <p class="doc-notes">This is a Delivery Challan and not a Tax Invoice. Goods are dispatched for the purpose stated above only. Please check items and quantity at the time of receipt.</p>
+
+        <div class="doc-signblock">
+          <div class="sign-col">
+            <div class="sign-line">Received in Good Condition By (Customer)</div>
+          </div>
+          <div class="sign-col">
+            <div class="sign-line">Dispatched By — UTTAM IT SUPPORT</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-config.js"></script>
+<script src="js/supabaseClient.js"></script>
+<script src="js/auth-guard.js"></script>
+<script src="js/delivery-challan-form.js"></script>
+</body>
+</html>
