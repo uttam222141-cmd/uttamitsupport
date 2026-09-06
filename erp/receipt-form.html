@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Receipt | Uttam IT Support ERP</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="css/erp.css">
+<link rel="stylesheet" href="css/print-doc.css">
+</head>
+<body class="erp-body">
+
+<div class="erp-shell">
+  <aside class="erp-sidebar">
+    <div class="brand">
+      <span class="brand-name">UTTAM IT SUPPORT</span>
+      <span class="brand-sub">ERP System</span>
+    </div>
+    <nav class="erp-nav">
+      <a href="index.html">Dashboard</a>
+      <a href="customers.html">Customers</a>
+      <a href="inventory.html">Inventory</a>
+      <a href="quotations.html">Quotations</a>
+      <a href="invoices.html">Invoices</a>
+      <a href="job-cards.html">Repair Job Cards</a>
+      <a href="delivery-challans.html">Delivery Challans</a>
+      <a href="amc-agreements.html">AMC Agreements</a>
+      <a href="receipts.html" class="active">Customer Receipts</a>
+      <a href="#" class="nav-soon">Reports <small>(coming soon)</small></a>
+      <a href="#" class="nav-soon" data-role="admin">Settings <small>(coming soon)</small></a>
+    </nav>
+    <div class="erp-sidebar-footer">
+      <span id="erp-user-name">—</span>
+      <span id="erp-user-role" class="erp-badge role-viewer">—</span>
+      <button onclick="erpLogout()">Sign out</button>
+    </div>
+  </aside>
+
+  <main class="erp-main">
+    <div class="erp-topbar">
+      <h1 id="form-title">New Customer Receipt</h1>
+      <a class="btn btn-ghost" href="receipts.html">&larr; Back to list</a>
+    </div>
+    <div class="erp-content">
+
+      <div class="doc-actions">
+        <button class="btn btn-solid" id="save-btn">Save Receipt</button>
+        <button class="btn btn-outline" id="print-btn">Print / Save as PDF</button>
+        <span class="erp-error" id="save-status"></span>
+      </div>
+
+      <div class="erp-card" id="customer-picker-card" style="max-width:900px; margin:0 auto 16px;">
+        <div class="erp-field" style="margin-bottom:0;">
+          <label>Select Customer *</label>
+          <input list="customer-options" id="customer-input" placeholder="Type name or phone to search…" autocomplete="off">
+          <datalist id="customer-options"></datalist>
+          <input type="hidden" id="customer-id">
+        </div>
+      </div>
+
+      <div class="doc-sheet" id="doc-sheet" style="max-width:650px;">
+        <div class="doc-head">
+          <div class="doc-brand">
+            <img class="doc-logo" src="logo.jpg" alt="Uttam IT Support logo">
+            <div>
+              <div class="doc-brand-name">UTTAM IT SUPPORT</div>
+              <div class="doc-brand-tag">Computer • Laptop • IT Support • Repair • AMC</div>
+              <div class="doc-brand-contact">8887961171 &nbsp;|&nbsp; uttamitsupport@gmail.com &nbsp;|&nbsp; Mumbai, Maharashtra</div>
+            </div>
+          </div>
+          <div class="doc-title">
+            <h2>RECEIPT</h2>
+            <div class="doc-meta">
+              <div><span class="k">Receipt No.:</span> <span id="meta-number">(auto on save)</span></div>
+              <div><span class="k">Date:</span> <span id="meta-date"></span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="doc-party-box" style="margin-bottom:14px;">
+          <h4>Received From</h4>
+          <div class="row"><span class="k">Name</span> <span id="p-name">—</span></div>
+          <div class="row"><span class="k">Company</span> <span id="p-company">—</span></div>
+          <div class="row"><span class="k">Phone</span> <span id="p-phone">—</span></div>
+        </div>
+
+        <div class="doc-party-box" style="margin-bottom:14px;">
+          <h4>Payment Details</h4>
+          <div class="erp-form-grid" style="grid-template-columns:1fr 1fr;">
+            <div class="erp-field">
+              <label>Amount Received (₹) *</label>
+              <input type="number" id="amount" min="0" step="0.01" value="0">
+            </div>
+            <div class="erp-field">
+              <label>Payment Mode</label>
+              <select id="payment-mode">
+                <option value="cash">Cash</option>
+                <option value="upi">UPI</option>
+                <option value="bank_transfer">Bank Transfer</option>
+                <option value="cheque">Cheque</option>
+                <option value="card">Card</option>
+              </select>
+            </div>
+            <div class="erp-field">
+              <label>Reference / Txn No.</label>
+              <input type="text" id="reference-no">
+            </div>
+            <div class="erp-field">
+              <label>Against Invoice No. (if any)</label>
+              <input type="text" id="against-invoice">
+            </div>
+          </div>
+        </div>
+
+        <div class="doc-party-box" style="margin-bottom:14px;">
+          <h4>Amount in Words</h4>
+          <p id="amount-words" style="margin:0; font-size:.88rem; font-weight:600;">—</p>
+        </div>
+
+        <div class="erp-field" style="margin-bottom:14px;">
+          <label>Remarks</label>
+          <input type="text" id="remarks">
+        </div>
+
+        <p class="doc-notes">This is a computer-generated receipt acknowledging payment received. Subject to realization of cheque, if applicable.</p>
+
+        <div class="doc-signblock">
+          <div class="sign-col">
+            <div class="sign-line">Customer Signature</div>
+          </div>
+          <div class="sign-col">
+            <div class="sign-line">For UTTAM IT SUPPORT — Authorized Signatory</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-config.js"></script>
+<script src="js/supabaseClient.js"></script>
+<script src="js/auth-guard.js"></script>
+<script src="js/receipt-form.js"></script>
+</body>
+</html>
