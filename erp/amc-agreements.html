@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMC Agreements | Uttam IT Support ERP</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="css/erp.css">
+</head>
+<body class="erp-body">
+
+<div class="erp-shell">
+  <aside class="erp-sidebar">
+    <div class="brand">
+      <span class="brand-name">UTTAM IT SUPPORT</span>
+      <span class="brand-sub">ERP System</span>
+    </div>
+    <nav class="erp-nav">
+      <a href="index.html">Dashboard</a>
+      <a href="customers.html">Customers</a>
+      <a href="inventory.html">Inventory</a>
+      <a href="quotations.html">Quotations</a>
+      <a href="invoices.html">Invoices</a>
+      <a href="job-cards.html">Repair Job Cards</a>
+      <a href="delivery-challans.html">Delivery Challans</a>
+      <a href="amc-agreements.html" class="active">AMC Agreements</a>
+      <a href="#" class="nav-soon">Customer Receipts <small>(coming soon)</small></a>
+      <a href="#" class="nav-soon">Reports <small>(coming soon)</small></a>
+      <a href="#" class="nav-soon" data-role="admin">Settings <small>(coming soon)</small></a>
+    </nav>
+    <div class="erp-sidebar-footer">
+      <span id="erp-user-name">—</span>
+      <span id="erp-user-role" class="erp-badge role-viewer">—</span>
+      <button onclick="erpLogout()">Sign out</button>
+    </div>
+  </aside>
+
+  <main class="erp-main">
+    <div class="erp-topbar">
+      <h1>AMC Agreements</h1>
+      <a class="btn btn-solid" href="amc-agreement-form.html" data-role="admin,technician">+ New Agreement</a>
+    </div>
+    <div class="erp-content">
+
+      <div class="erp-card">
+        <div class="erp-section-head">
+          <h2>All AMC Agreements</h2>
+          <input type="search" class="erp-search" id="amc-search" placeholder="Search number, customer…">
+        </div>
+        <div class="erp-table-wrap">
+          <table class="erp-table">
+            <thead>
+              <tr><th>Agreement No.</th><th>Customer</th><th>Type</th><th>Valid Till</th><th>Status</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="amc-body">
+              <tr class="erp-empty-row"><td colspan="6">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-config.js"></script>
+<script src="js/supabaseClient.js"></script>
+<script src="js/auth-guard.js"></script>
+<script src="js/amc-agreements-list.js"></script>
+</body>
+</html>
