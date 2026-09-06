@@ -76,10 +76,11 @@ table.doc-items .row-remove{ border:none; background:none; color:#B3401D; cursor
   table.doc-items td{ padding:4px 8px !important; }
   .doc-totals{ margin-bottom:10px !important; }
   .doc-notes{ padding-top:6px !important; margin-top:4px !important; }
-  .doc-signblock{ margin-top:18px !important; }
-  .doc-signblock .sign-line{ margin-top:18px !important; }
+  .doc-signblock{ margin-top:12px !important; }
+  .doc-signblock .sign-line{ margin-top:12px !important; }
   input, textarea, select{ border:none !important; background:transparent !important; }
+  textarea{ field-sizing:content !important; height:auto !important; min-height:18px !important; resize:none !important; }
   table.doc-items .row-remove, #add-row-btn{ display:none !important; }
   table.doc-items th{ background:var(--erp-primary) !important; color:#fff !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-  @page{ size:A4; margin:8mm; }
+  @page{ size:A4; margin:6mm; }
 }
