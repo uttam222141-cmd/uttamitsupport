@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Receipts | Uttam IT Support ERP</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="css/erp.css">
+</head>
+<body class="erp-body">
+
+<div class="erp-shell">
+  <aside class="erp-sidebar">
+    <div class="brand">
+      <span class="brand-name">UTTAM IT SUPPORT</span>
+      <span class="brand-sub">ERP System</span>
+    </div>
+    <nav class="erp-nav">
+      <a href="index.html">Dashboard</a>
+      <a href="customers.html">Customers</a>
+      <a href="inventory.html">Inventory</a>
+      <a href="quotations.html">Quotations</a>
+      <a href="invoices.html">Invoices</a>
+      <a href="job-cards.html">Repair Job Cards</a>
+      <a href="delivery-challans.html">Delivery Challans</a>
+      <a href="amc-agreements.html">AMC Agreements</a>
+      <a href="receipts.html" class="active">Customer Receipts</a>
+      <a href="#" class="nav-soon">Reports <small>(coming soon)</small></a>
+      <a href="#" class="nav-soon" data-role="admin">Settings <small>(coming soon)</small></a>
+    </nav>
+    <div class="erp-sidebar-footer">
+      <span id="erp-user-name">—</span>
+      <span id="erp-user-role" class="erp-badge role-viewer">—</span>
+      <button onclick="erpLogout()">Sign out</button>
+    </div>
+  </aside>
+
+  <main class="erp-main">
+    <div class="erp-topbar">
+      <h1>Customer Receipts</h1>
+      <a class="btn btn-solid" href="receipt-form.html" data-role="admin,technician">+ New Receipt</a>
+    </div>
+    <div class="erp-content">
+
+      <div class="erp-card">
+        <div class="erp-section-head">
+          <h2>All Receipts</h2>
+          <input type="search" class="erp-search" id="receipt-search" placeholder="Search number, customer…">
+        </div>
+        <div class="erp-table-wrap">
+          <table class="erp-table">
+            <thead>
+              <tr><th>Receipt No.</th><th>Customer</th><th>Mode</th><th>Amount</th><th>Date</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="receipts-body">
+              <tr class="erp-empty-row"><td colspan="6">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-config.js"></script>
+<script src="js/supabaseClient.js"></script>
+<script src="js/auth-guard.js"></script>
+<script src="js/receipts-list.js"></script>
+</body>
+</html>
