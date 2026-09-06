@@ -58,14 +58,28 @@ table.doc-items .row-remove{ border:none; background:none; color:#B3401D; cursor
 .doc-watermark{ display:none; }
 
 @media print{
+  html{ font-size:95%; }
   .erp-sidebar, .erp-topbar, .doc-actions, #customer-picker-card{ display:none !important; }
   body.erp-body, .erp-shell, .erp-main, .erp-content{
     display:block !important; background:#fff !important; margin:0 !important; padding:0 !important; height:auto !important; min-height:0 !important;
   }
   .doc-watermark{ display:none !important; }
-  .doc-sheet{ border:2px double var(--erp-primary); margin:0 auto !important; box-shadow:none; }
+  .doc-sheet{
+    border:2px double var(--erp-primary); margin:0 auto !important; box-shadow:none;
+    padding:16px 20px !important;
+  }
+  .doc-head{ padding-bottom:10px !important; margin-bottom:12px !important; }
+  .doc-parties{ margin-bottom:12px !important; }
+  .doc-party-box{ padding:8px 10px !important; }
+  .doc-party-box .row{ margin-bottom:2px !important; }
+  table.doc-items{ margin-bottom:8px !important; }
+  table.doc-items td{ padding:4px 8px !important; }
+  .doc-totals{ margin-bottom:10px !important; }
+  .doc-notes{ padding-top:6px !important; margin-top:4px !important; }
+  .doc-signblock{ margin-top:18px !important; }
+  .doc-signblock .sign-line{ margin-top:18px !important; }
   input, textarea, select{ border:none !important; background:transparent !important; }
   table.doc-items .row-remove, #add-row-btn{ display:none !important; }
   table.doc-items th{ background:var(--erp-primary) !important; color:#fff !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-  @page{ size:A4; margin:12mm; }
+  @page{ size:A4; margin:8mm; }
 }
