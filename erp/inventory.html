@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inventory | Uttam IT Support ERP</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="css/erp.css">
+</head>
+<body class="erp-body">
+
+<div class="erp-shell">
+  <aside class="erp-sidebar">
+    <div class="brand">
+      <span class="brand-name">UTTAM IT SUPPORT</span>
+      <span class="brand-sub">ERP System</span>
+    </div>
+    <nav class="erp-nav">
+      <a href="index.html">Dashboard</a>
+      <a href="customers.html">Customers</a>
+      <a href="inventory.html" class="active">Inventory</a>
+      <a href="quotations.html">Quotations</a>
+      <a href="invoices.html">Invoices</a>
+      <a href="job-cards.html">Repair Job Cards</a>
+      <a href="#" class="nav-soon">Delivery Challans <small>(coming soon)</small></a>
+      <a href="#" class="nav-soon">AMC Agreements <small>(coming soon)</small></a>
+      <a href="#" class="nav-soon">Customer Receipts <small>(coming soon)</small></a>
+      <a href="#" class="nav-soon">Reports <small>(coming soon)</small></a>
+      <a href="#" class="nav-soon" data-role="admin">Settings <small>(coming soon)</small></a>
+    </nav>
+    <div class="erp-sidebar-footer">
+      <span id="erp-user-name">—</span>
+      <span id="erp-user-role" class="erp-badge role-viewer">—</span>
+      <button onclick="erpLogout()">Sign out</button>
+    </div>
+  </aside>
+
+  <main class="erp-main">
+    <div class="erp-topbar">
+      <h1>Inventory</h1>
+      <button class="btn btn-solid" id="open-add-item" data-role="admin,technician">+ New Item</button>
+    </div>
+    <div class="erp-content">
+
+      <div class="erp-card">
+        <div class="erp-section-head">
+          <h2>All Inventory Items</h2>
+          <input type="search" class="erp-search" id="item-search" placeholder="Search product, brand, model, serial…">
+        </div>
+        <div class="erp-table-wrap">
+          <table class="erp-table">
+            <thead>
+              <tr>
+                <th>Product</th><th>Brand/Model</th><th>Specs</th><th>Serial No.</th><th>Qty</th><th>Selling Price</th><th data-role="admin,technician">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="items-body">
+              <tr class="erp-empty-row"><td colspan="7">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Add / Edit modal -->
+<div class="erp-modal-overlay" id="item-modal">
+  <div class="erp-modal">
+    <button class="erp-modal-close" id="close-item-modal">&times;</button>
+    <h3 id="item-modal-title">New Inventory Item</h3>
+    <form id="item-form">
+      <input type="hidden" id="item-id">
+      <div class="erp-form-grid">
+        <div class="erp-field">
+          <label>Product *</label>
+          <input type="text" id="i-product" placeholder="e.g. Laptop, Desktop" required>
+        </div>
+        <div class="erp-field">
+          <label>Brand</label>
+          <input type="text" id="i-brand">
+        </div>
+        <div class="erp-field">
+          <label>Model</label>
+          <input type="text" id="i-model">
+        </div>
+        <div class="erp-field">
+          <label>Processor</label>
+          <input type="text" id="i-processor">
+        </div>
+        <div class="erp-field">
+          <label>RAM</label>
+          <input type="text" id="i-ram">
+        </div>
+        <div class="erp-field">
+          <label>Storage</label>
+          <input type="text" id="i-storage">
+        </div>
+        <div class="erp-field">
+          <label>OS</label>
+          <input type="text" id="i-os">
+        </div>
+        <div class="erp-field">
+          <label>Serial Number</label>
+          <input type="text" id="i-serial">
+        </div>
+        <div class="erp-field">
+          <label>Asset ID</label>
+          <input type="text" id="i-asset">
+        </div>
+        <div class="erp-field">
+          <label>Warranty</label>
+          <input type="text" id="i-warranty" placeholder="e.g. 3 months">
+        </div>
+        <div class="erp-field">
+          <label>Quantity *</label>
+          <input type="number" id="i-quantity" value="1" min="0" required>
+        </div>
+        <div class="erp-field">
+          <label>Purchase Price (₹)</label>
+          <input type="number" id="i-purchase-price" min="0" step="0.01">
+        </div>
+        <div class="erp-field">
+          <label>Selling Price (₹)</label>
+          <input type="number" id="i-selling-price" min="0" step="0.01">
+        </div>
+      </div>
+      <div class="erp-field">
+        <label>Notes</label>
+        <textarea id="i-notes" rows="2"></textarea>
+      </div>
+      <p class="erp-error" id="item-form-error"></p>
+      <div style="display:flex; gap:10px; margin-top:8px;">
+        <button type="submit" class="btn btn-solid">Save Item</button>
+        <button type="button" class="btn btn-ghost" id="cancel-item-form">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-config.js"></script>
+<script src="js/supabaseClient.js"></script>
+<script src="js/auth-guard.js"></script>
+<script src="js/inventory.js"></script>
+</body>
+</html>
