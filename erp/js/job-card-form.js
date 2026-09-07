@@ -1,5 +1,6 @@
 let customersCache = [];
 let jobId = new URLSearchParams(window.location.search).get('id');
+let currentCustomerPhone = '';
 
 document.addEventListener('erp:ready', async () => {
   document.getElementById('meta-date').textContent = new Date().toLocaleDateString('en-IN');
@@ -17,7 +18,20 @@ document.addEventListener('erp:ready', async () => {
   document.getElementById('add-row-btn').addEventListener('click', () => addRow());
   document.getElementById('save-btn').addEventListener('click', saveJob);
   document.getElementById('print-btn').addEventListener('click', () => window.print());
+  document.getElementById('whatsapp-btn').addEventListener('click', sendWhatsAppUpdate);
 });
+
+function sendWhatsAppUpdate() {
+  const jobNumber = document.getElementById('meta-number').textContent;
+  const device = [document.getElementById('device-type').value, document.getElementById('device-brand').value, document.getElementById('device-model').value]
+    .filter(Boolean).join(' ');
+  const status = document.querySelector('input[name="job-status"]:checked')?.value || 'pending';
+  const statusLabel = status.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+  const businessName = (window.companySettings && window.companySettings.business_name) || 'Uttam IT Support';
+
+  const message = `Hello ${document.getElementById('p-name').textContent}, your ${device} repair (Job Card No: ${jobNumber}) status: *${statusLabel}*. — ${businessName}`;
+  openWhatsApp(currentCustomerPhone, message);
+}
 
 async function loadCustomers() {
   const { data, error } = await window.supabaseClient
@@ -44,6 +58,7 @@ function fillCustomerBox(c) {
   document.getElementById('p-phone').textContent = c.phone || '—';
   document.getElementById('p-email').textContent = c.email || '—';
   document.getElementById('p-address').textContent = c.address || '—';
+  currentCustomerPhone = c.phone || '';
 }
 
 function addRow(item) {
