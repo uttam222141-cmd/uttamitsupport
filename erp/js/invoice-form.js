@@ -1,6 +1,7 @@
 let customersCache = [];
 let invoiceId = new URLSearchParams(window.location.search).get('id');
 let fromQuotationId = new URLSearchParams(window.location.search).get('from_quotation');
+let currentCustomerPhone = '';
 
 document.addEventListener('erp:ready', async () => {
   document.getElementById('meta-date').textContent = new Date().toLocaleDateString('en-IN');
@@ -24,6 +25,7 @@ document.addEventListener('erp:ready', async () => {
   document.querySelectorAll('input[name="tax-type"]').forEach((r) => r.addEventListener('change', recalcTotals));
   document.getElementById('save-btn').addEventListener('click', saveInvoice);
   document.getElementById('print-btn').addEventListener('click', () => window.print());
+  document.getElementById('whatsapp-btn').addEventListener('click', sendWhatsAppInvoice);
 });
 
 async function loadCustomers() {
@@ -52,6 +54,16 @@ function fillCustomerBox(c) {
   document.getElementById('p-email').textContent = c.email || '—';
   document.getElementById('p-gst').textContent = c.gst || '—';
   document.getElementById('p-address').textContent = c.address || '—';
+  currentCustomerPhone = c.phone || '';
+}
+
+function sendWhatsAppInvoice() {
+  const invoiceNumber = document.getElementById('meta-number').textContent;
+  const grand = document.getElementById('t-grand').textContent;
+  const businessName = (window.companySettings && window.companySettings.business_name) || 'Uttam IT Support';
+
+  const message = `Hello ${document.getElementById('p-name').textContent}, your invoice ${invoiceNumber} for ₹${grand} is ready. Please contact us for payment details. — ${businessName}`;
+  openWhatsApp(currentCustomerPhone, message);
 }
 
 function addRow(item) {
