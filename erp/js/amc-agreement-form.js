@@ -15,9 +15,18 @@ document.addEventListener('erp:ready', async () => {
 
   document.getElementById('customer-input').addEventListener('input', onCustomerPick);
   document.getElementById('add-row-btn').addEventListener('click', () => addRow());
+  document.getElementById('end-date').addEventListener('change', autoSetStatus);
   document.getElementById('save-btn').addEventListener('click', saveAmc);
   document.getElementById('print-btn').addEventListener('click', () => window.print());
 });
+
+function autoSetStatus() {
+  const statusEl = document.getElementById('agreement-status');
+  if (statusEl.value === 'cancelled') return; // don't override an explicit cancellation
+  const endDate = document.getElementById('end-date').value;
+  if (!endDate) return;
+  statusEl.value = new Date(endDate) < new Date() ? 'expired' : 'active';
+}
 
 async function loadCustomers() {
   const { data, error } = await window.supabaseClient
@@ -91,6 +100,7 @@ async function loadAmc(id) {
   document.getElementById('contract-value').value = amc.contract_value ?? 0;
   document.getElementById('terms-conditions').value = amc.terms_conditions || '';
   document.getElementById('remarks').value = amc.remarks || '';
+  document.getElementById('agreement-status').value = amc.status || 'active';
   const typeInput = document.querySelector(`input[name="agreement-type"][value="${amc.agreement_type}"]`);
   if (typeInput) typeInput.checked = true;
 
@@ -128,6 +138,7 @@ async function saveAmc() {
     end_date: document.getElementById('end-date').value || null,
     visits_count: parseInt(document.getElementById('visits-count').value) || 0,
     contract_value: parseFloat(document.getElementById('contract-value').value) || 0,
+    status: document.getElementById('agreement-status').value,
     terms_conditions: document.getElementById('terms-conditions').value.trim() || null,
     remarks: document.getElementById('remarks').value.trim() || null,
   };
