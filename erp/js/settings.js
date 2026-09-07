@@ -1,155 +1,203 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Settings | Uttam IT Support ERP</title>
-<meta name="robots" content="noindex, nofollow">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../styles.css">
-<link rel="stylesheet" href="css/erp.css">
-</head>
-<body class="erp-body">
+document.addEventListener('erp:ready', async () => {
+  if (window.currentProfile.role !== 'admin') {
+    document.getElementById('settings-body').style.display = 'none';
+    document.getElementById('access-denied').style.display = '';
+    return;
+  }
 
-<div class="erp-shell">
-  <aside class="erp-sidebar">
-    <div class="brand">
-      <span class="brand-name">UTTAM IT SUPPORT</span>
-      <span class="brand-sub">ERP System</span>
-    </div>
-    <nav class="erp-nav">
-      <a href="index.html">Dashboard</a>
-      <a href="customers.html">Customers</a>
-      <a href="inventory.html">Inventory</a>
-      <a href="quotations.html">Quotations</a>
-      <a href="invoices.html">Invoices</a>
-      <a href="job-cards.html">Repair Job Cards</a>
-      <a href="delivery-challans.html">Delivery Challans</a>
-      <a href="amc-agreements.html">AMC Agreements</a>
-      <a href="receipts.html">Customer Receipts</a>
-      <a href="reports.html">Reports</a>
-      <a href="settings.html" class="active" data-role="admin">Settings</a>
-    </nav>
-    <div class="erp-sidebar-footer">
-      <span id="erp-user-name">—</span>
-      <span id="erp-user-role" class="erp-badge role-viewer">—</span>
-      <button onclick="erpLogout()">Sign out</button>
-    </div>
-  </aside>
+  await loadCompanySettings();
+  await loadUsers();
+  await loadCounters();
 
-  <main class="erp-main">
-    <div class="erp-topbar">
-      <h1>Settings</h1>
-    </div>
-    <div class="erp-content">
+  document.getElementById('save-company-btn').addEventListener('click', saveCompanySettings);
+});
 
-      <div id="access-denied" class="erp-card" style="display:none;">
-        <p>Only admins can view Settings.</p>
-      </div>
+const DOC_TYPE_LABELS = {
+  invoice: 'Invoice (INV)',
+  quotation: 'Quotation (QTN)',
+  repair_job: 'Repair Job Card (JOB)',
+  delivery_challan: 'Delivery Challan (DC)',
+  amc_agreement: 'AMC Agreement (AMC)',
+  customer_receipt: 'Customer Receipt (RCPT)',
+};
 
-      <div id="settings-body">
+async function loadCounters() {
+  const { data, error } = await window.supabaseClient
+    .from('document_counters')
+    .select('doc_type, year, last_number')
+    .order('year', { ascending: false })
+    .order('doc_type');
 
-        <div class="erp-card" style="margin-bottom:24px; max-width:700px;">
-          <div class="erp-section-head">
-            <h2>Company Profile</h2>
-          </div>
-          <div class="erp-form-grid" style="grid-template-columns:1fr 1fr;">
-            <div class="erp-field">
-              <label>Business Name</label>
-              <input type="text" id="cs-business-name">
-            </div>
-            <div class="erp-field">
-              <label>Tagline</label>
-              <input type="text" id="cs-tagline">
-            </div>
-            <div class="erp-field">
-              <label>Phone</label>
-              <input type="text" id="cs-phone">
-            </div>
-            <div class="erp-field">
-              <label>Email</label>
-              <input type="email" id="cs-email">
-            </div>
-            <div class="erp-field" style="grid-column:1 / -1;">
-              <label>Address</label>
-              <input type="text" id="cs-address">
-            </div>
-            <div class="erp-field">
-              <label>GSTIN</label>
-              <input type="text" id="cs-gstin">
-            </div>
-            <div class="erp-field">
-              <label>Logo path / URL</label>
-              <input type="text" id="cs-logo-url" placeholder="logo.jpg">
-            </div>
-          </div>
-        </div>
+  const tbody = document.getElementById('counters-body');
+  if (error) {
+    tbody.innerHTML = `<tr class="erp-empty-row"><td colspan="5">Could not load: ${escapeHtml(error.message)}</td></tr>`;
+    return;
+  }
+  if (!data.length) {
+    tbody.innerHTML = '<tr class="erp-empty-row"><td colspan="5">No documents saved yet this year.</td></tr>';
+    return;
+  }
 
-        <div class="erp-card" style="margin-bottom:24px; max-width:700px;">
-          <div class="erp-section-head">
-            <h2>Default Tax Settings</h2>
-          </div>
-          <p style="margin-top:0; color:#667; font-size:.85rem;">Applied automatically to new Invoices &amp; Quotations. Existing saved documents are never changed.</p>
-          <div class="erp-form-grid" style="grid-template-columns:1fr 1fr;">
-            <div class="erp-field">
-              <label>Default GST %</label>
-              <input type="number" id="cs-gst-percent" min="0" step="0.01">
-            </div>
-            <div class="erp-field">
-              <label>Default Tax Type</label>
-              <select id="cs-tax-type">
-                <option value="cgst_sgst">CGST + SGST (within state)</option>
-                <option value="igst">IGST (outside state)</option>
-              </select>
-            </div>
-          </div>
-        </div>
+  tbody.innerHTML = data.map((c) => `
+    <tr data-doc-type="${escapeHtml(c.doc_type)}" data-year="${c.year}">
+      <td>${escapeHtml(DOC_TYPE_LABELS[c.doc_type] || c.doc_type)}</td>
+      <td>${c.year}</td>
+      <td><input type="number" class="f-last-number" value="${c.last_number}" min="0" step="1" style="width:90px;"></td>
+      <td class="next-preview">${c.last_number + 1}</td>
+      <td>
+        <button class="btn btn-ghost save-counter-btn" style="padding:6px 10px; font-size:.8rem;">Save</button>
+        <span class="counter-status" style="font-size:.8rem; margin-left:6px;"></span>
+      </td>
+    </tr>
+  `).join('');
 
-        <div class="doc-actions" style="margin-bottom:32px;">
-          <button class="btn btn-solid" id="save-company-btn">Save Company &amp; Tax Settings</button>
-          <span class="erp-error" id="company-save-status"></span>
-        </div>
+  tbody.querySelectorAll('.f-last-number').forEach((input) => {
+    input.addEventListener('input', () => {
+      const tr = input.closest('tr');
+      tr.querySelector('.next-preview').textContent = (parseInt(input.value) || 0) + 1;
+    });
+  });
 
-        <div class="erp-card" style="margin-bottom:24px;">
-          <div class="erp-section-head">
-            <h2>User Management</h2>
-          </div>
-          <p style="margin-top:0; color:#667; font-size:.85rem;">To add a brand-new user, create their login in Supabase Dashboard → Authentication → Users. They will appear here automatically — set their role below.</p>
-          <div class="erp-table-wrap">
-            <table class="erp-table">
-              <thead>
-                <tr><th>Name</th><th>Role</th><th>Actions</th></tr>
-              </thead>
-              <tbody id="users-body">
-                <tr class="erp-empty-row"><td colspan="3">Loading…</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+  tbody.querySelectorAll('.save-counter-btn').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const tr = btn.closest('tr');
+      const docType = tr.dataset.docType;
+      const year = parseInt(tr.dataset.year);
+      const lastNumber = parseInt(tr.querySelector('.f-last-number').value) || 0;
+      const statusSpan = tr.querySelector('.counter-status');
+      statusSpan.textContent = 'Saving…';
+      statusSpan.style.color = '';
 
-        <div class="erp-card">
-          <div class="erp-section-head">
-            <h2>Document Numbering</h2>
-          </div>
-          <p style="margin:0; color:#667; font-size:.85rem;">
-            Invoice / Quotation / Job Card / Challan / AMC / Receipt numbers are generated automatically by the
-            <code>next_document_number</code> database function. To reset a sequence or change a prefix, that has
-            to be edited directly in Supabase (Dashboard → Database → Functions), since exposing that here safely
-            needs to know exactly how the function stores its counters. Ask your developer to share that function's
-            definition if you'd like a Settings screen for it too.
-          </p>
-        </div>
+      const { error: updateError } = await window.supabaseClient
+        .from('document_counters')
+        .update({ last_number: lastNumber })
+        .eq('doc_type', docType)
+        .eq('year', year);
 
-      </div>
+      if (updateError) {
+        statusSpan.style.color = '#C0392B';
+        statusSpan.textContent = updateError.message;
+        return;
+      }
+      statusSpan.style.color = '#1B7F3A';
+      statusSpan.textContent = 'Saved.';
+    });
+  });
+}
 
-    </div>
-  </main>
-</div>
+async function loadCompanySettings() {
+  const { data, error } = await window.supabaseClient
+    .from('company_settings')
+    .select('*')
+    .eq('id', 1)
+    .single();
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/supabase-config.js"></script>
-<script src="js/supabaseClient.js"></script>
-<script src="js/auth-guard.js"></script>
-<script src="js/settings.js"></script>
-</body>
-</html>
+  if (error || !data) {
+    document.getElementById('company-save-status').textContent =
+      'Could not load company settings — make sure the company_settings table exists (see settings-schema.sql).';
+    return;
+  }
+
+  document.getElementById('cs-business-name').value = data.business_name || '';
+  document.getElementById('cs-tagline').value = data.tagline || '';
+  document.getElementById('cs-phone').value = data.phone || '';
+  document.getElementById('cs-email').value = data.email || '';
+  document.getElementById('cs-address').value = data.address || '';
+  document.getElementById('cs-gstin').value = data.gstin || '';
+  document.getElementById('cs-logo-url').value = data.logo_url || '';
+  document.getElementById('cs-gst-percent').value = data.default_gst_percent ?? 18;
+  document.getElementById('cs-tax-type').value = data.default_tax_type || 'cgst_sgst';
+}
+
+async function saveCompanySettings() {
+  const statusEl = document.getElementById('company-save-status');
+  statusEl.textContent = '';
+  statusEl.style.color = '';
+
+  const payload = {
+    id: 1,
+    business_name: document.getElementById('cs-business-name').value.trim(),
+    tagline: document.getElementById('cs-tagline').value.trim() || null,
+    phone: document.getElementById('cs-phone').value.trim() || null,
+    email: document.getElementById('cs-email').value.trim() || null,
+    address: document.getElementById('cs-address').value.trim() || null,
+    gstin: document.getElementById('cs-gstin').value.trim() || null,
+    logo_url: document.getElementById('cs-logo-url').value.trim() || 'logo.jpg',
+    default_gst_percent: parseFloat(document.getElementById('cs-gst-percent').value) || 0,
+    default_tax_type: document.getElementById('cs-tax-type').value,
+    updated_at: new Date().toISOString(),
+  };
+
+  const { error } = await window.supabaseClient
+    .from('company_settings')
+    .upsert(payload, { onConflict: 'id' });
+
+  if (error) {
+    statusEl.textContent = error.message;
+    return;
+  }
+  statusEl.style.color = '#1B7F3A';
+  statusEl.textContent = 'Saved successfully.';
+}
+
+async function loadUsers() {
+  const { data, error } = await window.supabaseClient
+    .from('profiles')
+    .select('id, full_name, role')
+    .order('full_name');
+
+  const tbody = document.getElementById('users-body');
+  if (error) {
+    tbody.innerHTML = `<tr class="erp-empty-row"><td colspan="3">Could not load users: ${escapeHtml(error.message)}</td></tr>`;
+    return;
+  }
+  if (!data.length) {
+    tbody.innerHTML = '<tr class="erp-empty-row"><td colspan="3">No users found.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = data.map((u) => `
+    <tr data-id="${u.id}">
+      <td>${escapeHtml(u.full_name || '(no name set)')}</td>
+      <td>
+        <select class="f-role" style="width:auto; padding:4px 8px;">
+          <option value="admin" ${u.role === 'admin' ? 'selected' : ''}>Admin</option>
+          <option value="technician" ${u.role === 'technician' ? 'selected' : ''}>Technician</option>
+          <option value="viewer" ${u.role === 'viewer' ? 'selected' : ''}>Viewer</option>
+        </select>
+      </td>
+      <td>
+        <button class="btn btn-ghost save-role-btn" style="padding:6px 10px; font-size:.8rem;">Save</button>
+        <span class="role-status" style="font-size:.8rem; margin-left:6px;"></span>
+      </td>
+    </tr>
+  `).join('');
+
+  tbody.querySelectorAll('.save-role-btn').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const tr = btn.closest('tr');
+      const userId = tr.dataset.id;
+      const newRole = tr.querySelector('.f-role').value;
+      const statusSpan = tr.querySelector('.role-status');
+      statusSpan.textContent = 'Saving…';
+      statusSpan.style.color = '';
+
+      const { error: updateError } = await window.supabaseClient
+        .from('profiles').update({ role: newRole }).eq('id', userId);
+
+      if (updateError) {
+        statusSpan.style.color = '#C0392B';
+        statusSpan.textContent = updateError.message;
+        return;
+      }
+      statusSpan.style.color = '#1B7F3A';
+      statusSpan.textContent = 'Saved.';
+    });
+  });
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str ?? '';
+  return div.innerHTML;
+}
