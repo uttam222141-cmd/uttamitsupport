@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reports | Uttam IT Support ERP</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="css/erp.css">
+</head>
+<body class="erp-body">
+
+<div class="erp-shell">
+  <aside class="erp-sidebar">
+    <div class="brand">
+      <span class="brand-name">UTTAM IT SUPPORT</span>
+      <span class="brand-sub">ERP System</span>
+    </div>
+    <nav class="erp-nav">
+      <a href="index.html">Dashboard</a>
+      <a href="customers.html">Customers</a>
+      <a href="inventory.html">Inventory</a>
+      <a href="quotations.html">Quotations</a>
+      <a href="invoices.html">Invoices</a>
+      <a href="job-cards.html">Repair Job Cards</a>
+      <a href="delivery-challans.html">Delivery Challans</a>
+      <a href="amc-agreements.html">AMC Agreements</a>
+      <a href="receipts.html">Customer Receipts</a>
+      <a href="reports.html" class="active">Reports</a>
+      <a href="#" class="nav-soon" data-role="admin">Settings <small>(coming soon)</small></a>
+    </nav>
+    <div class="erp-sidebar-footer">
+      <span id="erp-user-name">—</span>
+      <span id="erp-user-role" class="erp-badge role-viewer">—</span>
+      <button onclick="erpLogout()">Sign out</button>
+    </div>
+  </aside>
+
+  <main class="erp-main">
+    <div class="erp-topbar">
+      <h1>Reports</h1>
+    </div>
+    <div class="erp-content">
+
+      <div class="erp-card" style="margin-bottom:20px;">
+        <div class="erp-section-head">
+          <h2>Date Range (applies to Sales / GST / Receipts below)</h2>
+        </div>
+        <div class="erp-form-grid" style="grid-template-columns:1fr 1fr auto; align-items:end;">
+          <div class="erp-field" style="margin-bottom:0;">
+            <label>From</label>
+            <input type="date" id="from-date">
+          </div>
+          <div class="erp-field" style="margin-bottom:0;">
+            <label>To</label>
+            <input type="date" id="to-date">
+          </div>
+          <div class="erp-field" style="margin-bottom:0;">
+            <button class="btn btn-solid" id="apply-btn">Apply</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="erp-stat-grid">
+        <div class="erp-stat-card">
+          <div class="label">Total Sales (Invoiced)</div>
+          <div class="value" id="stat-total-sales">—</div>
+        </div>
+        <div class="erp-stat-card">
+          <div class="label">Total Received</div>
+          <div class="value" id="stat-total-received">—</div>
+        </div>
+        <div class="erp-stat-card">
+          <div class="label">GST Collected</div>
+          <div class="value" id="stat-gst-collected">—</div>
+        </div>
+        <div class="erp-stat-card">
+          <div class="label">Outstanding (All Time)</div>
+          <div class="value" id="stat-outstanding">—</div>
+        </div>
+      </div>
+
+      <div class="erp-card" style="margin-bottom:24px;">
+        <div class="erp-section-head">
+          <h2>GST Summary — Invoice-wise</h2>
+          <a href="#" class="link-arrow" id="print-gst">Print &rarr;</a>
+        </div>
+        <div class="erp-table-wrap">
+          <table class="erp-table">
+            <thead>
+              <tr><th>Invoice No.</th><th>Date</th><th>Customer</th><th>Taxable (₹)</th><th>CGST (₹)</th><th>SGST (₹)</th><th>IGST (₹)</th><th>Total (₹)</th></tr>
+            </thead>
+            <tbody id="gst-body">
+              <tr class="erp-empty-row"><td colspan="8">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="erp-card" style="margin-bottom:24px;">
+        <div class="erp-section-head">
+          <h2>Repair Job Cards by Status</h2>
+        </div>
+        <div class="erp-table-wrap">
+          <table class="erp-table">
+            <thead>
+              <tr><th>Status</th><th>Count</th></tr>
+            </thead>
+            <tbody id="jobstatus-body">
+              <tr class="erp-empty-row"><td colspan="2">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="erp-card">
+        <div class="erp-section-head">
+          <h2>AMC Agreements Expiring in Next 30 Days</h2>
+        </div>
+        <div class="erp-table-wrap">
+          <table class="erp-table">
+            <thead>
+              <tr><th>Agreement No.</th><th>Customer</th><th>End Date</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="amc-expiring-body">
+              <tr class="erp-empty-row"><td colspan="4">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-config.js"></script>
+<script src="js/supabaseClient.js"></script>
+<script src="js/auth-guard.js"></script>
+<script src="js/reports.js"></script>
+</body>
+</html>
