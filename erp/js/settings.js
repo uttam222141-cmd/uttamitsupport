@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Settings | Uttam IT Support ERP</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="css/erp.css">
+</head>
+<body class="erp-body">
+
+<div class="erp-shell">
+  <aside class="erp-sidebar">
+    <div class="brand">
+      <span class="brand-name">UTTAM IT SUPPORT</span>
+      <span class="brand-sub">ERP System</span>
+    </div>
+    <nav class="erp-nav">
+      <a href="index.html">Dashboard</a>
+      <a href="customers.html">Customers</a>
+      <a href="inventory.html">Inventory</a>
+      <a href="quotations.html">Quotations</a>
+      <a href="invoices.html">Invoices</a>
+      <a href="job-cards.html">Repair Job Cards</a>
+      <a href="delivery-challans.html">Delivery Challans</a>
+      <a href="amc-agreements.html">AMC Agreements</a>
+      <a href="receipts.html">Customer Receipts</a>
+      <a href="reports.html">Reports</a>
+      <a href="settings.html" class="active" data-role="admin">Settings</a>
+    </nav>
+    <div class="erp-sidebar-footer">
+      <span id="erp-user-name">—</span>
+      <span id="erp-user-role" class="erp-badge role-viewer">—</span>
+      <button onclick="erpLogout()">Sign out</button>
+    </div>
+  </aside>
+
+  <main class="erp-main">
+    <div class="erp-topbar">
+      <h1>Settings</h1>
+    </div>
+    <div class="erp-content">
+
+      <div id="access-denied" class="erp-card" style="display:none;">
+        <p>Only admins can view Settings.</p>
+      </div>
+
+      <div id="settings-body">
+
+        <div class="erp-card" style="margin-bottom:24px; max-width:700px;">
+          <div class="erp-section-head">
+            <h2>Company Profile</h2>
+          </div>
+          <div class="erp-form-grid" style="grid-template-columns:1fr 1fr;">
+            <div class="erp-field">
+              <label>Business Name</label>
+              <input type="text" id="cs-business-name">
+            </div>
+            <div class="erp-field">
+              <label>Tagline</label>
+              <input type="text" id="cs-tagline">
+            </div>
+            <div class="erp-field">
+              <label>Phone</label>
+              <input type="text" id="cs-phone">
+            </div>
+            <div class="erp-field">
+              <label>Email</label>
+              <input type="email" id="cs-email">
+            </div>
+            <div class="erp-field" style="grid-column:1 / -1;">
+              <label>Address</label>
+              <input type="text" id="cs-address">
+            </div>
+            <div class="erp-field">
+              <label>GSTIN</label>
+              <input type="text" id="cs-gstin">
+            </div>
+            <div class="erp-field">
+              <label>Logo path / URL</label>
+              <input type="text" id="cs-logo-url" placeholder="logo.jpg">
+            </div>
+          </div>
+        </div>
+
+        <div class="erp-card" style="margin-bottom:24px; max-width:700px;">
+          <div class="erp-section-head">
+            <h2>Default Tax Settings</h2>
+          </div>
+          <p style="margin-top:0; color:#667; font-size:.85rem;">Applied automatically to new Invoices &amp; Quotations. Existing saved documents are never changed.</p>
+          <div class="erp-form-grid" style="grid-template-columns:1fr 1fr;">
+            <div class="erp-field">
+              <label>Default GST %</label>
+              <input type="number" id="cs-gst-percent" min="0" step="0.01">
+            </div>
+            <div class="erp-field">
+              <label>Default Tax Type</label>
+              <select id="cs-tax-type">
+                <option value="cgst_sgst">CGST + SGST (within state)</option>
+                <option value="igst">IGST (outside state)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="doc-actions" style="margin-bottom:32px;">
+          <button class="btn btn-solid" id="save-company-btn">Save Company &amp; Tax Settings</button>
+          <span class="erp-error" id="company-save-status"></span>
+        </div>
+
+        <div class="erp-card" style="margin-bottom:24px;">
+          <div class="erp-section-head">
+            <h2>User Management</h2>
+          </div>
+          <p style="margin-top:0; color:#667; font-size:.85rem;">To add a brand-new user, create their login in Supabase Dashboard → Authentication → Users. They will appear here automatically — set their role below.</p>
+          <div class="erp-table-wrap">
+            <table class="erp-table">
+              <thead>
+                <tr><th>Name</th><th>Role</th><th>Actions</th></tr>
+              </thead>
+              <tbody id="users-body">
+                <tr class="erp-empty-row"><td colspan="3">Loading…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="erp-card">
+          <div class="erp-section-head">
+            <h2>Document Numbering</h2>
+          </div>
+          <p style="margin:0; color:#667; font-size:.85rem;">
+            Invoice / Quotation / Job Card / Challan / AMC / Receipt numbers are generated automatically by the
+            <code>next_document_number</code> database function. To reset a sequence or change a prefix, that has
+            to be edited directly in Supabase (Dashboard → Database → Functions), since exposing that here safely
+            needs to know exactly how the function stores its counters. Ask your developer to share that function's
+            definition if you'd like a Settings screen for it too.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase-config.js"></script>
+<script src="js/supabaseClient.js"></script>
+<script src="js/auth-guard.js"></script>
+<script src="js/settings.js"></script>
+</body>
+</html>
