@@ -38,21 +38,16 @@ function renderAmc(rows) {
     tbody.innerHTML = '<tr class="erp-empty-row"><td colspan="6">No AMC agreements yet.</td></tr>';
     return;
   }
-  const today = new Date();
-  tbody.innerHTML = rows.map((a) => {
-    const endDate = a.end_date ? new Date(a.end_date) : null;
-    const expired = endDate && endDate < today;
-    return `
+  tbody.innerHTML = rows.map((a) => `
     <tr>
       <td>${escapeHtml(a.agreement_number || '(draft)')}</td>
       <td>${escapeHtml(a.customers?.name || '—')}</td>
       <td>${escapeHtml(formatType(a.agreement_type))}</td>
       <td>${a.end_date ? new Date(a.end_date).toLocaleDateString('en-IN') : '—'}</td>
-      <td><span class="erp-badge role-${expired ? 'viewer' : 'admin'}">${expired ? 'Expired' : 'Active'}</span></td>
+      <td><span class="erp-badge role-${a.status === 'active' ? 'admin' : 'viewer'}">${escapeHtml(formatType(a.status))}</span></td>
       <td><a class="btn btn-ghost" style="padding:6px 10px; font-size:.8rem;" href="amc-agreement-form.html?id=${a.id}">Open</a></td>
     </tr>
-  `;
-  }).join('');
+  `).join('');
 }
 
 function formatType(type) {
