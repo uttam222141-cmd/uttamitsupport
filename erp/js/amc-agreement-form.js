@@ -1,5 +1,6 @@
 let customersCache = [];
 let amcId = new URLSearchParams(window.location.search).get('id');
+let currentCustomerPhone = '';
 
 document.addEventListener('erp:ready', async () => {
   document.getElementById('meta-date').textContent = new Date().toLocaleDateString('en-IN');
@@ -18,6 +19,7 @@ document.addEventListener('erp:ready', async () => {
   document.getElementById('end-date').addEventListener('change', autoSetStatus);
   document.getElementById('save-btn').addEventListener('click', saveAmc);
   document.getElementById('print-btn').addEventListener('click', () => window.print());
+  document.getElementById('whatsapp-btn').addEventListener('click', sendWhatsAppReminder);
 });
 
 function autoSetStatus() {
@@ -53,6 +55,17 @@ function fillCustomerBox(c) {
   document.getElementById('p-phone').textContent = c.phone || '—';
   document.getElementById('p-email').textContent = c.email || '—';
   document.getElementById('p-address').textContent = c.address || '—';
+  currentCustomerPhone = c.phone || '';
+}
+
+function sendWhatsAppReminder() {
+  const agreementNumber = document.getElementById('meta-number').textContent;
+  const endDate = document.getElementById('end-date').value;
+  const endDateLabel = endDate ? new Date(endDate).toLocaleDateString('en-IN') : 'soon';
+  const businessName = (window.companySettings && window.companySettings.business_name) || 'Uttam IT Support';
+
+  const message = `Hello ${document.getElementById('p-name').textContent}, your AMC Agreement ${agreementNumber} is expiring on ${endDateLabel}. Please contact us to renew and avoid service interruption. — ${businessName}`;
+  openWhatsApp(currentCustomerPhone, message);
 }
 
 function addRow(item) {
