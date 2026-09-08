@@ -9,9 +9,11 @@
   background-color:#fff;
   background-image:url('logo_watermark.png'), url('top_band.png'), url('bottom_band.png');
   background-repeat:no-repeat, no-repeat, no-repeat;
-  background-position:center center, top center, bottom center;
-  background-size:260px auto, 100% auto, 100% auto;
+  background-position:center 68%, top center, bottom center;
+  background-size:240px auto, 100% auto, 100% auto;
   max-width:900px; margin:0 auto;
+  min-height:1273px; /* A4 ratio (297/210) at 900px width, so screen preview matches print page size */
+  box-sizing:border-box;
   border:3px double var(--erp-primary); border-radius:10px;
   padding:28px 30px;
 }
@@ -72,11 +74,13 @@ table.doc-items .row-remove{ border:none; background:none; color:#B3401D; cursor
   .doc-sheet{
     border:2px double var(--erp-primary); margin:0 auto !important; box-shadow:none;
     padding:16px 20px !important;
+    box-sizing:border-box !important;
+    min-height:273mm !important; /* A4 height (297mm) minus 6mm top+bottom page margin, minus border/padding buffer */
     background-color:#fff !important;
     background-image:url('logo_watermark.png'), url('top_band.png'), url('bottom_band.png') !important;
     background-repeat:no-repeat, no-repeat, no-repeat !important;
-    background-position:center center, top center, bottom center !important;
-    background-size:220px auto, 100% auto, 100% auto !important;
+    background-position:center 68%, top center, bottom center !important;
+    background-size:190px auto, 100% auto, 100% auto !important;
     -webkit-print-color-adjust:exact;
     print-color-adjust:exact;
   }
