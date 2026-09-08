@@ -6,14 +6,17 @@
    ========================================================= */
 
 .doc-sheet{
-  background:#fff url('wave_background.png') no-repeat center top;
-  background-size:cover;
+  background-color:#fff;
+  background-image:url('logo_watermark.png'), url('top_band.png'), url('bottom_band.png');
+  background-repeat:no-repeat, no-repeat, no-repeat;
+  background-position:center center, top center, bottom center;
+  background-size:260px auto, 100% auto, 100% auto;
   max-width:900px; margin:0 auto;
   border:3px double var(--erp-primary); border-radius:10px;
   padding:28px 30px;
 }
 .doc-logo{ width:56px; height:56px; object-fit:contain; flex-shrink:0; }
-.doc-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:20px; border-bottom:2px solid var(--erp-primary); padding-bottom:16px; margin-bottom:18px; background:rgba(255,255,255,0.85); border-radius:8px; }
+.doc-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:20px; border-bottom:2px solid var(--erp-primary); padding:10px 12px 16px; margin-bottom:18px; background:rgba(255,255,255,0.88); border-radius:8px; }
 .doc-brand{ display:flex; gap:12px; align-items:center; }
 .doc-brand-name{ font-family:var(--font-display); font-weight:700; font-size:1.3rem; color:var(--erp-primary); }
 .doc-brand-tag{ font-size:.78rem; color:var(--muted); }
@@ -50,8 +53,8 @@ table.doc-items .row-remove{ border:none; background:none; color:#B3401D; cursor
 .doc-totals input{ border:none; border-bottom:1px solid var(--erp-border); text-align:right; width:90px; background:transparent; }
 .doc-totals tr.grand td{ border-top:2px solid var(--erp-primary); font-size:1.05rem; color:var(--erp-primary); padding-top:8px; }
 
-.doc-notes{ font-size:.82rem; color:var(--muted); border-top:1px dashed var(--erp-border); padding-top:12px; margin-top:6px; }
-.doc-signblock{ display:flex; justify-content:space-between; margin-top:36px; font-size:.85rem; }
+.doc-notes{ font-size:.82rem; color:var(--muted); border-top:1px dashed var(--erp-border); padding-top:12px; margin-top:6px; background:rgba(255,255,255,0.85); }
+.doc-signblock{ display:flex; justify-content:space-between; margin-top:36px; font-size:.85rem; background:rgba(255,255,255,0.85); padding:8px; border-radius:8px; }
 .doc-signblock .sign-col{ width:45%; }
 .doc-signblock .sign-line{ border-top:1px solid var(--ink); margin-top:36px; padding-top:4px; }
 
@@ -69,8 +72,11 @@ table.doc-items .row-remove{ border:none; background:none; color:#B3401D; cursor
   .doc-sheet{
     border:2px double var(--erp-primary); margin:0 auto !important; box-shadow:none;
     padding:16px 20px !important;
-    background:#fff url('wave_background.png') no-repeat center top !important;
-    background-size:cover !important;
+    background-color:#fff !important;
+    background-image:url('logo_watermark.png'), url('top_band.png'), url('bottom_band.png') !important;
+    background-repeat:no-repeat, no-repeat, no-repeat !important;
+    background-position:center center, top center, bottom center !important;
+    background-size:220px auto, 100% auto, 100% auto !important;
     -webkit-print-color-adjust:exact;
     print-color-adjust:exact;
   }
