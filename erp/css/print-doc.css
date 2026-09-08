@@ -6,7 +6,7 @@
    ========================================================= */
 
 .doc-sheet{
-  background:#fff url('invoice_background.png') no-repeat center top;
+  background:#fff url('doc_background.png') no-repeat center top;
   background-size:cover;
   max-width:900px; margin:0 auto;
   border:3px double var(--erp-primary); border-radius:10px;
@@ -69,7 +69,7 @@ table.doc-items .row-remove{ border:none; background:none; color:#B3401D; cursor
   .doc-sheet{
     border:2px double var(--erp-primary); margin:0 auto !important; box-shadow:none;
     padding:16px 20px !important;
-    background:#fff url('invoice_background.png') no-repeat center top !important;
+    background:#fff url('doc_background.png') no-repeat center top !important;
     background-size:cover !important;
     -webkit-print-color-adjust:exact;
     print-color-adjust:exact;
