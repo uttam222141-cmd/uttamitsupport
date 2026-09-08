@@ -15,7 +15,7 @@
   min-height:1273px; /* A4 ratio (297/210) at 900px width, so screen preview matches print page size */
   box-sizing:border-box;
   border:3px double var(--erp-primary); border-radius:10px;
-  padding:150px 30px 28px;
+  padding:150px 30px 90px;
 }
 .doc-logo{ width:56px; height:56px; object-fit:contain; flex-shrink:0; }
 .doc-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:20px; border-bottom:2px solid var(--erp-primary); padding:10px 12px 16px; margin-bottom:18px; background:rgba(255,255,255,0.88); border-radius:8px; }
@@ -73,7 +73,7 @@ table.doc-items .row-remove{ border:none; background:none; color:#B3401D; cursor
   .doc-watermark{ display:none !important; }
   .doc-sheet{
     border:2px double var(--erp-primary); margin:0 auto !important; box-shadow:none;
-    padding:34mm 20px 16px !important;
+    padding:34mm 20px 20mm !important;
     box-sizing:border-box !important;
     min-height:273mm !important; /* A4 height (297mm) minus 6mm top+bottom page margin, minus border/padding buffer */
     background-color:#fff !important;
